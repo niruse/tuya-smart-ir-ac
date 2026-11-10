@@ -16,6 +16,7 @@ from homeassistant.components.climate.const import (
     PRESET_NONE,
     HVACMode,
 )
+from . import power_override
 from .const import (
     DOMAIN,
     MANUFACTURER,
@@ -137,6 +138,16 @@ class TuyaClimateEntity:
     def _current_hvac_mode(self) -> HVACMode:
         """Centralized accessor to fetch the current active HVAC mode."""
         data = self._device_climate_data
+        # Local patch: a mapped power plug knows better than the last IR command.
+        plug = power_override.powered(getattr(self, "hass", None), self._climate_id)
+        if plug is not None:
+            if not plug:
+                return HVACMode.OFF
+            if data.power and data.hvac_mode is not HVACMode.OFF:
+                return data.hvac_mode
+            # On by the wall remote: the last mode HA set is the best guess.
+            mode = data.hvac_mode
+            return mode if mode and mode is not HVACMode.OFF else HVACMode.COOL
         return data.hvac_mode if data.power else HVACMode.OFF
 
     @property

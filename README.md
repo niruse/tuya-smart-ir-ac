@@ -1,5 +1,7 @@
 # Tuya Smart IR AC Integration for Home Assistant
 
+> **Fork note (niruse):** this fork is upstream `2026.9.0` plus one addition: an IR AC can take its on/off state from a power-metering smart plug, so presses on the wall remote show up in Home Assistant. Map climates to plugs in `<config>/tuya_smart_ir_ac_power.json` - see the docstring in [`power_override.py`](custom_components/tuya_smart_ir_ac/power_override.py). Without that file it behaves exactly like upstream.
+
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 [![Stable](https://img.shields.io/github/v/release/EnzoD86/tuya-smart-ir-ac)](https://github.com/EnzoD86/tuya-smart-ir-ac/releases/latest)
 [![Donate](https://img.shields.io/badge/donate-BuyMeCoffee-yellow.svg)](https://www.buymeacoffee.com/enzod86)

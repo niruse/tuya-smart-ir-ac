@@ -7,6 +7,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DEVICE_TYPE_CLIMATES
+from . import power_override
 from .entity import TuyaClimateEntity
 from .models import HubConfigEntry, RuntimeData
 
@@ -108,7 +109,7 @@ class TuyaClimate(ClimateEntity, CoordinatorEntity, TuyaClimateEntity):
     async def async_added_to_hass(self) -> None:
         """Restore previous entity state and track source sensors."""
         await super().async_added_to_hass()
-        self.async_track_sensor_states([self._temperature_sensor, self._humidity_sensor])
+        self.async_track_sensor_states([self._temperature_sensor, self._humidity_sensor, power_override.power_sensor(self._climate_id)])
         self.update_preset_history()
 
     @callback
